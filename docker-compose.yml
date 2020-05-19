@@ -1,0 +1,36 @@
+version: '3'
+services:
+  ghost:
+    image: "ghost"
+    environment:
+    - url=http://localhost:2368
+    networks:
+      - frontend
+    restart: always
+    ports:
+      - "2368:2368"
+    volumes:
+      - ./data/GHOST_DATA:/var/lib/ghost/content
+  api:
+    build: ./api
+    restart: always
+    ports: 
+      - "5000:5000"
+    networks:
+      - frontend  
+  
+  filegator:
+    build: ./filegator-zipped-folder
+    restart: always
+    ports: 
+      - "8080:8080"  
+    depends_on:
+      - ghost
+      - api       
+    volumes:
+      - ./data/GHOST_DATA:/var/www/html/demorepo
+    networks:
+      - frontend        
+
+networks:
+  frontend:

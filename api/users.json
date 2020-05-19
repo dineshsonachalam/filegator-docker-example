@@ -1,0 +1,19 @@
+{
+ "dinesh": {
+            "username": "dinesh",
+            "password": "123",
+            "permissions": "read|write|upload|download|batchdownload|zip"
+        
+ },
+ "niranjan":   {
+        "username": "niranjan",
+        "password": "456",
+        "permissions": "read|download|batchdownload"
+    },
+ "rani": {
+     "username": "rani",
+     "password": "789",
+     "permissions": "read|write|upload|download|batchdownload|zip"
+ }
+}
+
