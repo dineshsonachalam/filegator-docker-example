@@ -1,8 +1,8 @@
 current_working_dir=`pwd`
-rm -rf ./filegator-zipped-folder/filegator
-mkdir ./filegator-zipped-folder/filegator
-rsync -av --progress ./filegator ./filegator-zipped-folder/ --exclude node_modules
-cd ./filegator-zipped-folder
+rm -rf ./filegator-zip/filegator
+mkdir ./filegator-zip/filegator
+rsync -av --progress ./filegator ./filegator-zip/ --exclude node_modules
+cd ./filegator-zip
 zip -r ./filegator.zip ./
 rm -rf ./filegator
 cd $current_working_dir
