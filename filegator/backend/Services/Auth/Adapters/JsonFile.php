@@ -50,17 +50,36 @@ class JsonFile implements Service, AuthInterface
 
     public function authenticate($username, $password): bool
     {
-        $all_users = $this->getUsers();
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => "http://api:5000/user/validate/",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS =>"{\n\t\"username\":\"{$username}\",\n\t\"password\":\"${password}\"\n}",
+        CURLOPT_HTTPHEADER => array(
+            "Content-Type: application/json"
+        ),
+        ));
+        $user_validation_response = json_decode(curl_exec($curl), true);
+        curl_close($curl);
+        if ($user_validation_response['validation'] ==  "success"){
+            $user_data = array(
+                "username"    => "{$username}",
+                "name"        => "{$username}",
+                "role"        => "user",
+                "homedir"     => "/",
+                "permissions" => "{$user_validation_response['permissions']}",
 
-        foreach ($all_users as &$u) {
-            if ($u['username'] == $username && $this->verifyPassword($password, $u['password'])) {
-                $user = $this->mapToUserObject($u);
-                $this->store($user);
-
-                return true;
-            }
+            );
+            $user = $this->mapToUserObject($user_data);
+            $this->store($user);
+            return true;
         }
-
         return false;
     }
 
