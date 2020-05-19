@@ -20,7 +20,7 @@ services:
       - frontend  
   
   filegator:
-    build: ./filegator-zipped-folder
+    build: ./filegator-zip
     restart: always
     ports: 
       - "8080:8080"  
